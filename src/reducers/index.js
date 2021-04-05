@@ -1,5 +1,8 @@
 
 export const initialState = {
+  data: [],
+  error:'',
+  loading: false
 }
 
 const reducer = ()=>{
