@@ -1,24 +1,76 @@
-import React from 'react';
+  
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import { postSmurf } from "../actions/index.js"
 
-class AddForm extends React.Component {
+const AddForm = (props) => {
+  const [smurf, setSmurf] = useState({
+    name: "",
+    age: "",
+    height: "",
+  });
 
-    render() {
-        return(<section>
-            <h2>Add Smurf</h2>
-            <form>
-                <div className="form-group">
-                    <label htmlFor="name">Name:</label><br/>
-                    <input onChange={this.handleChange} name="name" id="name" />
-                </div>
+  const submitHandler = (e) => {
+    e.preventDefault();
+    props.postSmurf(smurf);
+    document.getElementById("smurfForm").reset();
+  };
 
-                <div data-testid="errorAlert" className="alert alert-danger" role="alert">Error: </div>
-                <button>Submit Smurf</button>
-            </form>
-        </section>);
-    }
-}
+  const inputHandler = (e) => {
+    e.preventDefault();
+    setSmurf({ ...smurf, [e.target.name]: e.target.value });
+  };
 
-export default AddForm;
+  return (
+    <div>
+      <form onSubmit={submitHandler} id="smurfForm" className="form">
+        <label htmlFor="name">
+          <input
+          className="input"
+            type="text"
+            name="name"
+            value={props.name}
+            placeholder="name"
+            id="name"
+            onChange={inputHandler}
+          />
+        </label>
+        <label htmlFor="age">
+          <input
+            className="input"
+            type="text"
+            name="age"
+            value={props.age}
+            placeholder="age"
+            id="age"
+            onChange={inputHandler}
+          />
+        </label>
+        <label htmlFor="height">
+          <input
+            className="input"
+            type="text"
+            name="height"
+            value={props.height}
+            placeholder="height"
+            id="height"
+            onChange={inputHandler}
+          />
+        </label>
+        <button className="btn">Add a Smurf</button>
+      </form>
+    </div>
+  );
+};
+
+const mapStateToProps = (state) => {
+  return {
+    smurfs: state.smurfs,
+    error: state.error,
+  };
+};
+
+export default connect(mapStateToProps, { postSmurf })(AddForm);
 
 //Task List:
 //1. Add in all necessary import components and library methods.

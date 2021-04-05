@@ -1,16 +1,30 @@
-import axios from 'axios';
+import axios from "axios";
 
-export const LOADING = 'LOADING';
-export const DATA = 'DATA';
-export const ERROR = 'ERROR';
+export const FETCH_START = "FETCH_START";
+export const FETCH_SUCCESS = "FETCH_SUCCESS";
+export const FETCH_FAILURE = "FETCH_FAILURE ";
 
-const getData = () => (dispatch) => {
-  dispatch({ type: LOADING});
+export const fetchSmurfs = () => (dispatch) => {
+  dispatch({ type: FETCH_START });
+  axios
+    .get("http://localhost:3333/smurfs")
+    .then((res) => dispatch({ type: FETCH_SUCCESS, payload: res.data }))
+    .catch((err) => dispatch({ type: FETCH_FAILURE, payload: err.response }));
+};
 
-  axios.get(`http:/localhost:3333/smurfs`)
-    .then(res=>dispatch({type: DATA, payload:res.data}))
-    .catch(err=>dispatch({type: ERROR, payload: err}))
+export const POST_START = "POST_START";
+export const POST_SUCCESS = "POST_SUCCESS";
+export const POST_FAILURE = "POST_FAILURE ";
+
+export const postSmurf = (smurf) => (dispatch) => {
+  dispatch({ type: POST_START });
+
+  axios
+    .post("http://localhost:3333/smurfs", smurf)
+    .then((res) => dispatch({ type: FETCH_SUCCESS, payload: res.data }))
+    .catch((err) => dispatch({ type: FETCH_FAILURE, payload: err.response }));
 }
+
 //Task List:
 //1. Add fetch smurfs action: 
 //              - fetch and return initial list of smurfs
@@ -23,4 +37,4 @@ const getData = () => (dispatch) => {
 //              - dispatch an error text action if an request returns an error
 //3. Add set error text action:
 //              - return action object setting error text
-//4. Any other actions you deem nessiary to complete application.
+//4. Any other actions you deem nessiary to complete application *
