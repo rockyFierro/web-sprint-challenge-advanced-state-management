@@ -1,3 +1,6 @@
+import {
+  LOADING, ERROR, DATA
+} from '../actions'
 
 export const initialState = {
   data: [],
@@ -5,7 +8,31 @@ export const initialState = {
   loading: false
 }
 
-const reducer = ()=>{
+const reducer = (state = initialState, action)=>{
+  switch(action.state){
+    case LOADING:
+      return {
+        ...state,
+        data:[],
+        error:'',
+        loading:true
+      }
+    case ERROR: 
+      return {
+        ...state,
+        data: [],
+        error: action.payload,
+        loading: false
+      }
+    case DATA: 
+      return {
+        ...state,
+        data: action.payload,
+        error: '',
+        loading: false
+      }
+    default: return state;
+  }
 }
 
 export default reducer;
